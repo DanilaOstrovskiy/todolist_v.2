@@ -2,6 +2,7 @@ import React, {ChangeEvent, FC, RefObject, useRef, useState, KeyboardEvent} from
 import TasksList from "./TasksList";
 import {FilterValuesType} from "./App";
 import AddItemForm from "./AddItemForm";
+import EditableSpan from "./EditableSpan";
 
 
 type TodoListPropsType = {
@@ -13,6 +14,8 @@ type TodoListPropsType = {
     removeTask: (taskId: string, todoListId: string) => void
     addTask: (title: string, todoListId: string) => void
     changeTaskStatus: (taskId: string, isDone: boolean, todoListId: string) => void
+    changeTaskTitle : (taskId: string, newTitle: string, todoListId: string) => void
+    changeTodoListTitle: (title: string, todoListId: string) => void
 
     changeTodoListFilter: (filter: FilterValuesType, todoListId: string) => void
     removeTodoList: (todoListId: string) => void
@@ -32,15 +35,17 @@ const TodoList: FC<TodoListPropsType> = (props) => {
 
     const handlerCreator = (filter: FilterValuesType) => () => props.changeTodoListFilter(filter, props.todoListId)
     const removeTodoList = () => props.removeTodoList(props.todoListId)
+    const changeTodoListTitle = (title:string) => props.changeTodoListTitle(title, props.todoListId)
 
 
     return (
         <div className={"todolist"}>
-            <h3>{props.title}
+            <h3><EditableSpan title={props.title} changeTitle={changeTodoListTitle}/>
                 <button onClick={removeTodoList}>x</button>
             </h3>
             <AddItemForm maxLengthUserMessage={15} addNewItem={addTask}/>
             <TasksList
+                changeTaskTitle={props.changeTaskTitle}
                 todoListId={props.todoListId}
                 tasks={props.tasks}
                 removeTask={props.removeTask}

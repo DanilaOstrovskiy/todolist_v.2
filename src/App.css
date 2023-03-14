@@ -1,17 +1,19 @@
-.App {
+/*.App {
   padding: 30px;
   display: flex;
 }
 
 .App > div {
   margin-right: 50px;
-}
+}*/
+
 .todolist {
-  height: max-content;
-  border: 2px solid hotpink;
-  border-radius:  5px;
-  padding: 20px;
-  background-color: #f2f2f2;
+  height: 100%;
+  width: 280px;
+/*  border: 2px solid #9c27b0;
+  border-radius:  5px;*/
+  /*padding: 20px;*/
+/*  background-color: #f2f2f2;*/
 }
 
 .task {
@@ -22,10 +24,10 @@
   opacity: 0.5;
 }
 .active-filter-btn {
-  background-color: hotpink;
+  background-color: #9c27b0;
   font-weight: bold;
   color:  white;
-  border: 2px solid hotpink;
+  border: 2px solid #9c27b0;
   border-radius: 3px;
 }
 .filter-btn {
@@ -37,10 +39,12 @@
 }
 .filter-btn-container {
   display: flex;
-  justify-content: space-between
+/*  justify-content: space-between;*/
+  justify-content: space-between;
+/*  gap: 5px;*/
 }
 .input-error {
-  border: 2px solid hotpink;
+  border: 2px solid #9c27b0;
   outline: none;
 }
 

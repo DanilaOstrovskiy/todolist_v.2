@@ -1,4 +1,7 @@
 import React, {ChangeEvent, FC, KeyboardEvent, useState} from 'react';
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import {IconButton, TextField} from "@mui/material";
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 
 type AddItemFormType = {
     maxLengthUserMessage: number
@@ -34,21 +37,33 @@ const AddItemForm:FC<AddItemFormType> = ({
     const userMaxLengthMessage = isUserMessageToLong && <div style={{color: "hotpink"}}>Task title is to long!</div>
     const inputErrorClasses = error || isUserMessageToLong ? "input-error" : ""
     const onKeyDownHandler = isAddBtnDisabled ? undefined : onKeyDownAddItem
+    const isInputShowError = isUserMessageToLong || error
+    const helperText = (error && "Title is required!") || ( isUserMessageToLong && "Task title is to long!")
 
     return (
         <div>
             {/*<input ref={addTaskInput}/>*/}
             {/*<button onClick={addTask}>+</button>*/}
-            <input
+            <TextField
+                size={"small"}
                 value={title}
                 placeholder="Please, enter title"
                 onChange={changeLocalTitle}
                 onKeyDown={onKeyDownHandler}
                 className={inputErrorClasses}
+                error={isInputShowError}
+                helperText={helperText}
             />
-            <button disabled={isAddBtnDisabled} onClick={addItem}>+</button>
-            {userMaxLengthMessage}
-            {userErrorMessage}
+
+
+            <IconButton
+                size={"small"}
+                disabled={isAddBtnDisabled}
+                onClick={addItem}>
+                <AddCircleOutlineIcon />
+            </IconButton>
+{/*            {userMaxLengthMessage}
+            {userErrorMessage}*/}
         </div>
     );
 };

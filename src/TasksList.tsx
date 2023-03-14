@@ -1,6 +1,8 @@
 import React, {ChangeEvent, FC} from 'react';
 import {TaskType} from "./TodoList";
 import EditableSpan from "./EditableSpan";
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import {Checkbox, IconButton, List, ListItem} from "@mui/material";
 
 type TasksListPropsType = {
     todoListId: string
@@ -20,22 +22,37 @@ const TasksList: FC<TasksListPropsType> = (props): JSX.Element => {
             const changeTaskStatusHandler = (e: ChangeEvent<HTMLInputElement>) => props.changeTaskStatus(task.id, e.currentTarget.checked, props.todoListId)
             const  changeTaskTitleHandler = (title: string) => {props.changeTaskTitle(task.id, title, props.todoListId)}
             return (
-                <li key={task.id}>
-                    <input
-                        type="checkbox"
+                <ListItem
+                    divider
+                    disablePadding
+                    key={task.id}
+                    secondaryAction={
+                        <IconButton
+                                size={"small"}
+                                onClick={removeTaskHandler}>
+                                <HighlightOffIcon />
+                        </IconButton>
+                }>
+                    <Checkbox
+                        size={"small"}
                         checked={task.isDone}
                         onChange={changeTaskStatusHandler}
                     />
                     <EditableSpan title={task.title} spanClasses={taskClasses} changeTitle = {changeTaskTitleHandler}/>
-                    <button onClick={removeTaskHandler}>x</button>
-                </li>
+{/*                    <IconButton
+                        size={"small"}
+                        onClick={removeTaskHandler}>
+                        <HighlightOffIcon />
+                    </IconButton>*/}
+                </ListItem>
             )
         })
         : <span>Your taskslist is empty</span>
     return (
-        <ul>
+        <List
+            disablePadding={false}>
             {tasksItems}
-        </ul>
+        </List>
     );
 };
 

@@ -3,6 +3,20 @@ import './App.css';
 import TodoList, {TaskType} from "./TodoList";
 import {v1} from "uuid";
 import AddItemForm from "./AddItemForm";
+import {
+    AppBar,
+    Button, Checkbox,
+    Container,
+    createTheme, CssBaseline, FormControlLabel, FormGroup,
+    Grid,
+    IconButton,
+    Paper,
+    ThemeProvider,
+    Toolbar,
+    Typography
+} from "@mui/material";
+import {Menu} from "@mui/icons-material";
+import {lightGreen, orange} from "@mui/material/colors";
 
 
 // CRUD
@@ -42,22 +56,25 @@ function App(): JSX.Element {
             {id: v1(), title: "Milk", isDone: true},
             {id: v1(), title: "Bred", isDone: true},
             {id: v1(), title: "MEAT", isDone: false},
-    ]
-})
+        ]
+    })
 
     //BLL:
+    const [isDarkMode, setDarkMode] = useState<boolean>(false)
 
     const removeTask = (taskId: string, todoListId: string) => {
-/*
-        const tasksForUpdate = tasks[todoListId]
-        const updatedTasks = tasksForUpdate.filter(t => t.id !== taskId)
-        const copyTasks = {...tasks}
-        copyTasks[todoListId]= updatedTasks
-        setTasks(copyTasks)
-*/
+        /*
+                const tasksForUpdate = tasks[todoListId]
+                const updatedTasks = tasksForUpdate.filter(t => t.id !== taskId)
+                const copyTasks = {...tasks}
+                copyTasks[todoListId]= updatedTasks
+                setTasks(copyTasks)
+        */
 
-        setTasks({...tasks,
-            [todoListId]: tasks[todoListId].filter(t => t.id !== taskId)})
+        setTasks({
+            ...tasks,
+            [todoListId]: tasks[todoListId].filter(t => t.id !== taskId)
+        })
     }
 
     const addTask = (title: string, todoListId: string) => {
@@ -69,32 +86,31 @@ function App(): JSX.Element {
         const tasksForUpdate = tasks[todoListId]
         const updatedTasks = [newTask, ...tasksForUpdate]
         const copyTasks = {...tasks}
-        copyTasks[todoListId]= updatedTasks
+        copyTasks[todoListId] = updatedTasks
         setTasks(copyTasks)
 
         setTasks({...tasks, [todoListId]: [newTask, ...tasksForUpdate]})
     }
 
     const changeTaskStatus = (taskId: string, newIsDone: boolean, todoListId: string) => {
-/*        const tasksForUpdate = tasks[todoListId]
-        const updatedTasks = tasksForUpdate.map(t => t.id === taskId? {...t, isDone: newIsDone}: t)
-        const copyTasks = {...tasks}
-        copyTasks[todoListId]= updatedTasks
-        setTasks(copyTasks)*/
+        /*        const tasksForUpdate = tasks[todoListId]
+                const updatedTasks = tasksForUpdate.map(t => t.id === taskId? {...t, isDone: newIsDone}: t)
+                const copyTasks = {...tasks}
+                copyTasks[todoListId]= updatedTasks
+                setTasks(copyTasks)*/
         //
-        setTasks({...tasks, [todoListId]: tasks[todoListId].map(t => t.id === taskId? {...t, isDone: newIsDone}: t)})
+        setTasks({...tasks, [todoListId]: tasks[todoListId].map(t => t.id === taskId ? {...t, isDone: newIsDone} : t)})
     }
     const changeTaskTitle = (taskId: string, newTitle: string, todoListId: string) => {
-        setTasks({...tasks, [todoListId]: tasks[todoListId].map(t => t.id === taskId? {...t, title: newTitle}: t)})
+        setTasks({...tasks, [todoListId]: tasks[todoListId].map(t => t.id === taskId ? {...t, title: newTitle} : t)})
     }
     const changeTodoListTitle = (title: string, todoListId: string) => {
-        setTodoLists(todoLists.map(tl=> tl.id === todoListId ? {...tl, title: title} : tl))
+        setTodoLists(todoLists.map(tl => tl.id === todoListId ? {...tl, title: title} : tl))
     }
-
 
 
     const changeTodoListFilter = (filter: FilterValuesType, todoListId: string) => {
-        setTodoLists(todoLists.map(tl=> tl.id === todoListId ? {...tl, filter: filter} : tl))
+        setTodoLists(todoLists.map(tl => tl.id === todoListId ? {...tl, filter: filter} : tl))
     }
 
 
@@ -108,9 +124,9 @@ function App(): JSX.Element {
     const addTodoList = (title: string) => {
         const newTodoListId = v1()
         const newTodoList: TodoListType = {
-            id:newTodoListId,
-            title:title,
-            filter:'all'
+            id: newTodoListId,
+            title: title,
+            filter: 'all'
         }
         setTodoLists([...todoLists, newTodoList])
         setTasks({...tasks, [newTodoListId]: []})
@@ -126,36 +142,82 @@ function App(): JSX.Element {
                 return tasks
         }
     }
+    const mode = isDarkMode ? "dark" : "light"
+
+    const newTheme = createTheme({
+        palette: {
+            mode: mode,
+            primary: lightGreen,
+            secondary: orange
+        }
+    })
 
     const todoListsComponents = todoLists.map(tl => {
         const filteredTasks: Array<TaskType> = getFilteredTasks(tasks[tl.id], tl.filter)
         return (
-            <TodoList
-                key={tl.id}
-                todoListId={tl.id}
-                title={tl.title}
-                tasks={filteredTasks}
-                filter={tl.filter}
+            <Grid item>
+                <Paper sx={{p: "20px"}} elevation={8}>
+                    <TodoList
+                        key={tl.id}
+                        todoListId={tl.id}
+                        title={tl.title}
+                        tasks={filteredTasks}
+                        filter={tl.filter}
 
-                removeTask={removeTask}
-                addTask={addTask}
+                        removeTask={removeTask}
+                        addTask={addTask}
 
-                changeTaskStatus={changeTaskStatus}
-                changeTaskTitle={changeTaskTitle}
-                changeTodoListTitle={changeTodoListTitle}
+                        changeTaskStatus={changeTaskStatus}
+                        changeTaskTitle={changeTaskTitle}
+                        changeTodoListTitle={changeTodoListTitle}
 
-                changeTodoListFilter={changeTodoListFilter}
-                removeTodoList={removeTodoList}
-            />
+                        changeTodoListFilter={changeTodoListFilter}
+                        removeTodoList={removeTodoList}
+                    />
+                </Paper>
+            </Grid>
         )
     })
 
     //UI:
     return (
-        <div className="App">
-            <AddItemForm maxLengthUserMessage={15} addNewItem={addTodoList}/>
-            {todoListsComponents}
-        </div>
+        <ThemeProvider theme={newTheme}>
+            <CssBaseline />
+            <div className="App">
+                <AppBar position="static">
+                    <Toolbar>
+                        <IconButton
+                            size="large"
+                            edge="start"
+                            color="inherit"
+                            aria-label="menu"
+                            sx={{mr: 2}}
+                        >
+                            <Menu/>
+                        </IconButton>
+                        <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
+                            TodoLists
+                        </Typography>
+                        <FormGroup>
+                            <FormControlLabel
+                                control={<Checkbox
+                                    onChange={(e)=>setDarkMode(e.currentTarget.checked)} />}
+                                label={isDarkMode ? "Light mode" : "Dark mode"}
+                            />
+                        </FormGroup>
+                        <Button color="inherit">Login</Button>
+                    </Toolbar>
+                </AppBar>
+                <Container fixed>
+                    <Grid container sx={{p: "10px 0"}}>
+                        <AddItemForm maxLengthUserMessage={15} addNewItem={addTodoList}/>
+                    </Grid>
+                    <Grid container spacing={3}>
+                        {todoListsComponents}
+                    </Grid>
+                </Container>
+            </div>
+       </ThemeProvider >
     );
 }
 

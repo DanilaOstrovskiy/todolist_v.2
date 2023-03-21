@@ -24,7 +24,7 @@ import {lightGreen, orange} from "@mui/material/colors";
 
 export type FilterValuesType = "all" | "active" | "completed"
 
-type TodoListType = {
+export type TodoListType = {
     id: string
     title: string
     filter: FilterValuesType
@@ -63,6 +63,7 @@ function App(): JSX.Element {
     const [isDarkMode, setDarkMode] = useState<boolean>(false)
 
     const removeTask = (taskId: string, todoListId: string) => {
+        //1.Get next state
         /*
                 const tasksForUpdate = tasks[todoListId]
                 const updatedTasks = tasksForUpdate.filter(t => t.id !== taskId)
@@ -70,13 +71,13 @@ function App(): JSX.Element {
                 copyTasks[todoListId]= updatedTasks
                 setTasks(copyTasks)
         */
+        //2. Set next state
 
         setTasks({
             ...tasks,
             [todoListId]: tasks[todoListId].filter(t => t.id !== taskId)
         })
     }
-
     const addTask = (title: string, todoListId: string) => {
         const newTask: TaskType = {
             id: v1(),
@@ -91,7 +92,6 @@ function App(): JSX.Element {
 
         setTasks({...tasks, [todoListId]: [newTask, ...tasksForUpdate]})
     }
-
     const changeTaskStatus = (taskId: string, newIsDone: boolean, todoListId: string) => {
         /*        const tasksForUpdate = tasks[todoListId]
                 const updatedTasks = tasksForUpdate.map(t => t.id === taskId? {...t, isDone: newIsDone}: t)
@@ -104,16 +104,13 @@ function App(): JSX.Element {
     const changeTaskTitle = (taskId: string, newTitle: string, todoListId: string) => {
         setTasks({...tasks, [todoListId]: tasks[todoListId].map(t => t.id === taskId ? {...t, title: newTitle} : t)})
     }
+
     const changeTodoListTitle = (title: string, todoListId: string) => {
         setTodoLists(todoLists.map(tl => tl.id === todoListId ? {...tl, title: title} : tl))
     }
-
-
     const changeTodoListFilter = (filter: FilterValuesType, todoListId: string) => {
         setTodoLists(todoLists.map(tl => tl.id === todoListId ? {...tl, filter: filter} : tl))
     }
-
-
     const removeTodoList = (todoListId: string) => {
         setTodoLists(todoLists.filter(tl => tl.id !== todoListId))
         const copyTasks = {...tasks}
@@ -142,8 +139,9 @@ function App(): JSX.Element {
                 return tasks
         }
     }
-    const mode = isDarkMode ? "dark" : "light"
 
+
+    const mode = isDarkMode ? "dark" : "light"
     const newTheme = createTheme({
         palette: {
             mode: mode,

@@ -142,14 +142,10 @@ function AppWithReducers(): JSX.Element {
                         key={tl.id}
                         todoListId={tl.id}
                         title={tl.title}
-                        tasks={filteredTasks}
                         filter={tl.filter}
 
-                        removeTask={removeTask}
-                        addTask={addTask}
 
-                        changeTaskStatus={changeTaskStatus}
-                        changeTaskTitle={changeTaskTitle}
+
                         changeTodoListTitle={changeTodoListTitle}
 
                         changeTodoListFilter={changeTodoListFilter}
@@ -191,7 +187,7 @@ function AppWithReducers(): JSX.Element {
                 </AppBar>
                 <Container fixed>
                     <Grid container sx={{p: "10px 0"}}>
-                        <AddItemForm maxLengthUserMessage={15} addNewItem={addTodoList}/>
+                        <AddItemForm  addNewItem={addTodoList}/>
                     </Grid>
                     <Grid container spacing={3}>
                         {todoListsComponents}

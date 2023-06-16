@@ -25,6 +25,8 @@ import {
     todoListsReducer
 } from "./state/todolists-reducer";
 import {AddTaskAC, ChangeTaskStatusAC, ChangeTaskTitleAC, RemoveTaskAC, tasksReducer} from "./state/tasks-reducer";
+import {useDispatch, useSelector} from "react-redux";
+import {AppRootState} from "./state/store";
 
 
 // CRUD
@@ -46,70 +48,54 @@ type TodoListsStateType = Array<TodoListType>
 
 
 function AppWithRedux(): JSX.Element {
-    //BLL:
-    const todoListsId_1 = v1()
-    const todoListsId_2 = v1()
 
-    const [todoLists, dispatchToTodolistsReducer] = useReducer(todoListsReducer, [
-        {id: todoListsId_1, title: "What to learn", filter: "all"},
-        {id: todoListsId_2, title: "What to buy", filter: "all"}
-    ])
-
-    const [tasks, dispatchToTasksReducer] = useReducer(tasksReducer,{
-        [todoListsId_1]: [
-            {id: v1(), title: "HTML & CSS", isDone: true},
-            {id: v1(), title: "ES6 & TS", isDone: true},
-            {id: v1(), title: "React & Redux", isDone: false},
-        ],
-        [todoListsId_2]: [
-            {id: v1(), title: "Milk", isDone: true},
-            {id: v1(), title: "Bred", isDone: true},
-            {id: v1(), title: "MEAT", isDone: false},
-        ]
-    })
-
-    //BLL:
     const [isDarkMode, setDarkMode] = useState<boolean>(false)
+
+    const dispatch = useDispatch()
+    const todoLists = useSelector<AppRootState,Array<TodoListType>>(state=>state.todoLists)
+
+    const tasks = useSelector<AppRootState, TasksStateType>(state => state.tasks)
 
     const removeTask = (taskId: string, todoListId: string) => {
         const action = RemoveTaskAC(taskId, todoListId)
-        dispatchToTasksReducer(action);
-
+        dispatch(action);
     }
 
     const addTask = (title: string, todoListId: string) => {
         const action = AddTaskAC(title, todoListId)
-        dispatchToTasksReducer(action);
+        dispatch(action);
     }
 
     const changeTaskStatus = (taskId: string, isDone: boolean, todoListId: string) => {
         const action = ChangeTaskStatusAC(taskId, isDone, todoListId)
-        dispatchToTasksReducer(action);
+        dispatch(action);
 
     }
+
     const changeTaskTitle = (taskId: string, newTitle: string, todoListId: string) => {
         const action = ChangeTaskTitleAC(taskId, newTitle, todoListId)
-        dispatchToTasksReducer(action);
+        dispatch(action);
     }
 
 
     const changeTodoListTitle = (title: string, todoListId: string) => {
         const action = ChangeTodoListTitleAC(title, todoListId)
-        dispatchToTodolistsReducer(action);
+        dispatch(action);
     }
+
     const changeTodoListFilter = (todoListId: string, filter: FilterValuesType) => {
         const action = ChangeTodoListFilterAC(todoListId, filter)
-        dispatchToTodolistsReducer(action);
+        dispatch(action);
     }
+
     const removeTodoList = (todoListId: string) => {
         const action = RemoveTodoListAC(todoListId)
-        dispatchToTasksReducer(action)
-        dispatchToTodolistsReducer(action);
+        dispatch(action)
     }
+
     const addTodoList = (title: string) => {
         const action = AddTodoListAC(title)
-        dispatchToTasksReducer(action);
-        dispatchToTodolistsReducer(action);
+        dispatch(action);
     }
 
     const getFilteredTasks = (tasks: Array<TaskType>, filter: FilterValuesType): Array<TaskType> => {
@@ -134,7 +120,7 @@ function AppWithRedux(): JSX.Element {
     })
 
     const todoListsComponents = todoLists.map(tl => {
-        const filteredTasks: Array<TaskType> = getFilteredTasks(tasks[tl.id], tl.filter)
+/*        const filteredTasks: Array<TaskType> = getFilteredTasks(tasks[tl.id], tl.filter)*/
         return (
             <Grid item>
                 <Paper sx={{p: "20px"}} elevation={8}>
@@ -142,16 +128,8 @@ function AppWithRedux(): JSX.Element {
                         key={tl.id}
                         todoListId={tl.id}
                         title={tl.title}
-                        tasks={filteredTasks}
                         filter={tl.filter}
-
-                        removeTask={removeTask}
-                        addTask={addTask}
-
-                        changeTaskStatus={changeTaskStatus}
-                        changeTaskTitle={changeTaskTitle}
                         changeTodoListTitle={changeTodoListTitle}
-
                         changeTodoListFilter={changeTodoListFilter}
                         removeTodoList={removeTodoList}
                     />
@@ -191,7 +169,7 @@ function AppWithRedux(): JSX.Element {
                 </AppBar>
                 <Container fixed>
                     <Grid container sx={{p: "10px 0"}}>
-                        <AddItemForm maxLengthUserMessage={15} addNewItem={addTodoList}/>
+                        <AddItemForm addNewItem={addTodoList}/>
                     </Grid>
                     <Grid container spacing={3}>
                         {todoListsComponents}

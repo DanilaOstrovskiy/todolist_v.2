@@ -3,12 +3,11 @@ import {IconButton, TextField} from "@mui/material";
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 
 type AddItemFormType = {
-    maxLengthUserMessage: number
     addNewItem: (title: string) => void
 }
 
 const AddItemForm:FC<AddItemFormType> = ({
-                                             maxLengthUserMessage,
+
                                              addNewItem
 }) => {
     const [title, setTitle] = useState<string>("")
@@ -31,13 +30,12 @@ const AddItemForm:FC<AddItemFormType> = ({
     const onKeyDownAddItem = (e: KeyboardEvent<HTMLInputElement>)=> e.key === "Enter" && addItem()
 
     const userErrorMessage = error && <div style={{color: "hotpink"}}>Title is required!</div>
-    const isUserMessageToLong: boolean = title.length > maxLengthUserMessage
-    const isAddBtnDisabled = !title.length || isUserMessageToLong || error
-    const userMaxLengthMessage = isUserMessageToLong && <div style={{color: "hotpink"}}>Task title is to long!</div>
-    const inputErrorClasses = error || isUserMessageToLong ? "input-error" : ""
+    const isAddBtnDisabled = !title.length  || error
+    const userMaxLengthMessage =  <div style={{color: "hotpink"}}>Task title is to long!</div>
+    const inputErrorClasses = error ? "input-error" : ""
     const onKeyDownHandler = isAddBtnDisabled ? undefined : onKeyDownAddItem
-    const isInputShowError = isUserMessageToLong || error
-    const helperText = (error && "Title is required!") || ( isUserMessageToLong && "Task title is to long!")
+    const isInputShowError =  error
+    const helperText = (error && "Title is required!") || ("Task title is to long!")
 
     return (
         <div>

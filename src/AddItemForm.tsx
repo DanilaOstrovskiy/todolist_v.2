@@ -1,5 +1,4 @@
 import React, {ChangeEvent, FC, KeyboardEvent, useState} from 'react';
-import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import {IconButton, TextField} from "@mui/material";
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 

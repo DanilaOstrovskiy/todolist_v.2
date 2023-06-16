@@ -19,7 +19,7 @@ type TodoListPropsType = {
     changeTaskTitle : (taskId: string, newTitle: string, todoListId: string) => void
     changeTodoListTitle: (title: string, todoListId: string) => void
 
-    changeTodoListFilter: (filter: FilterValuesType, todoListId: string) => void
+    changeTodoListFilter: (todoListId: string, filter: FilterValuesType) => void
     removeTodoList: (todoListId: string) => void
 }
 
@@ -35,7 +35,7 @@ const TodoList: FC<TodoListPropsType> = (props) => {
             props.addTask(title, props.todoListId)
     }
 
-    const handlerCreator = (filter: FilterValuesType) => () => props.changeTodoListFilter(filter, props.todoListId)
+    const handlerCreator = (filter: FilterValuesType) => () => props.changeTodoListFilter(props.todoListId, filter)
     const removeTodoList = () => props.removeTodoList(props.todoListId)
     const changeTodoListTitle = (title:string) => props.changeTodoListTitle(title, props.todoListId)
 

@@ -45,7 +45,7 @@ export type TasksStateType = {
 type TodoListsStateType = Array<TodoListType>
 
 
-function AppWithReducers(): JSX.Element {
+function AppWithRedux(): JSX.Element {
     //BLL:
     const todoListsId_1 = v1()
     const todoListsId_2 = v1()
@@ -202,4 +202,4 @@ function AppWithReducers(): JSX.Element {
     );
 }
 
-export default AppWithReducers;
+export default AppWithRedux;

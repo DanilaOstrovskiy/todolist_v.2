@@ -120,7 +120,7 @@ function AppWithRedux(): JSX.Element {
     })
 
     const todoListsComponents = todoLists.map(tl => {
-/*        const filteredTasks: Array<TaskType> = getFilteredTasks(tasks[tl.id], tl.filter)*/
+        const filteredTasks: Array<TaskType> = getFilteredTasks(tasks[tl.id], tl.filter)
         return (
             <Grid item>
                 <Paper sx={{p: "20px"}} elevation={8}>

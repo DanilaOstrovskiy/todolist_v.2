@@ -15,6 +15,7 @@ export type ActionsType = RemoveTaskAT | AddTaskAT | ChangeTaskStatusAT |  Chang
 const initialState: TasksStateType = {}
 
 export const tasksReducer = (state: TasksStateType = initialState, action: ActionsType) => {
+    ///need to fix
     switch (action.type) {
         case "REMOVE-TASK":{
             const stateCopy = {...state};
@@ -34,12 +35,7 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
         case "CHANGE-TASK-STATUS":{
                 const stateCopy = {...state};
                 let tasks = stateCopy[action.todoListId];
-                // найдём нужную таску:
-                let task = tasks.find(t => t.id === action.taskId);
-                //изменим таску, если она нашлась
-                if (task) {
-                    task.isDone = action.isDone;
-                }
+                stateCopy[action.todoListId] = tasks.map(t => t.id === action.taskId ? {...t, isDone: action.isDone} : t)
                 return stateCopy;
             }
         case "CHANGE-TASK-TITLE": {
